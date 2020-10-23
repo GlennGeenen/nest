@@ -156,16 +156,12 @@ export class NestFactoryStatic {
     container.setHttpAdapter(httpServer);
 
     await httpServer?.init();
-    try {
-      this.logger.log(MESSAGES.APPLICATION_START);
-      await ExceptionsZone.asyncRun(async () => {
-        await dependenciesScanner.scan(module);
-        await instanceLoader.createInstancesOfDependencies();
-        dependenciesScanner.applyApplicationProviders();
-      });
-    } catch (e) {
-      process.abort();
-    }
+    this.logger.log(MESSAGES.APPLICATION_START);
+    await ExceptionsZone.asyncRun(async () => {
+      await dependenciesScanner.scan(module);
+      await instanceLoader.createInstancesOfDependencies();
+      dependenciesScanner.applyApplicationProviders();
+    });
   }
 
   private createProxy(target: any) {
